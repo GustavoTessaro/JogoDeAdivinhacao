@@ -33,6 +33,31 @@ bool jogarDeNovo()
 
 }
 
+int pontuacao(int pontuacaoJogador1, int numeroSorteado1, int numeroJogador1)
+{
+    int pontuacaoJogador = pontuacaoJogador1;
+    int numeroSorteado = numeroSorteado1;
+    int numeroJogador = numeroJogador1;
+
+    int diferenca = Math.Abs(numeroSorteado - numeroJogador);
+
+    if (diferenca >= 10)
+    {
+        pontuacaoJogador -= 100;
+    }
+    else if (diferenca >= 5)
+    {
+        pontuacaoJogador -= 50;
+    }
+    else if (diferenca >= 1)
+    {
+        pontuacaoJogador -= 20;
+    }
+
+    return pontuacaoJogador;
+
+}
+
 Console.WriteLine("Jogo de Adivinhação");
 Console.WriteLine("");
 
@@ -42,6 +67,7 @@ Random random = new Random();
 bool verifica = true;
 bool verificarDificuldade = true;
 List<int> numerosDigitados = new List<int>();
+int pontuacaoJogador = 1000;
 
 while (verifica == true)
 {
@@ -113,7 +139,7 @@ while (verifica == true)
             try
             {
                 numeroJogador = Convert.ToInt32(Console.ReadLine());
-    
+
                 if (numeroJogador == 0)
                 {
                     Console.WriteLine($"O número sorteado era {numeroSorteado}.");
@@ -163,12 +189,14 @@ while (verifica == true)
                 Console.WriteLine("Número incorreto. O número sorteado é MAIOR do que o número que você digitou.");
                 Console.WriteLine($"Você tem {tentativas - 1 - i} tentativas restantes. Tente novamente.");
                 Console.WriteLine("");
+                pontuacaoJogador = pontuacao(pontuacaoJogador, numeroSorteado, numeroJogador);
             }
             else
             {
                 Console.WriteLine($"Número incorreto. O número sorteado é MENOR do que o número que você digitou.");
                 Console.WriteLine($"Você tem {tentativas - 1 - i} tentativas restantes. Tente novamente.");
                 Console.WriteLine("");
+                pontuacaoJogador = pontuacao(pontuacaoJogador, numeroSorteado, numeroJogador);
             }
 
         }
@@ -178,17 +206,24 @@ while (verifica == true)
     if (acertou == false)
     {
         Console.WriteLine($"Suas tentativas acabaram. O número sorteado era {numeroSorteado}.");
+        Console.WriteLine("");
+        Console.WriteLine("A sua Pontuação final foi: " + pontuacaoJogador);
+        Console.WriteLine("");
         verifica = jogarDeNovo();
     }
     else
     {
         Console.WriteLine($"O número sorteado era {numeroSorteado}.");
+        Console.WriteLine("");
+        Console.WriteLine("A sua Pontuação final foi: " + pontuacaoJogador);
+        Console.WriteLine("");
         verifica = jogarDeNovo();
     }
 
 
 }
 
+Console.WriteLine("");
 Console.WriteLine("Obrigado por jogar! Até a próxima.");
 
 
