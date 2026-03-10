@@ -101,7 +101,7 @@ while (verifica == true)
     numeroSorteado = random.Next(1, dificuldade + 1);
     bool acertou = false;
 
-    for (int i = 0; i < tentativas - 1; i++)
+    for (int i = 0; i < tentativas; i++)
     {
 
         bool numeroRepetido = false;
