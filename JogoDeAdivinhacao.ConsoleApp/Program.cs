@@ -109,9 +109,17 @@ while (verifica == true)
         while (numeroRepetido == false)
         {
             Console.WriteLine($"Digite um número inteiro entre 1 e {dificuldade}:");
+            Console.WriteLine("Ou digite 0 para sair do jogo.");
             try
             {
                 numeroJogador = Convert.ToInt32(Console.ReadLine());
+    
+                if (numeroJogador == 0)
+                {
+                    Console.WriteLine($"O número sorteado era {numeroSorteado}.");
+                    Console.WriteLine("Obrigado por jogar! Até a próxima.");
+                    Environment.Exit(0);
+                }
 
                 if (numeroJogador < 1 || numeroJogador > dificuldade)
                 {
@@ -180,5 +188,7 @@ while (verifica == true)
 
 
 }
+
+Console.WriteLine("Obrigado por jogar! Até a próxima.");
 
 
