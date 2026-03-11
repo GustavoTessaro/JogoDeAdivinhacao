@@ -1,229 +1,239 @@
 ﻿
-bool jogarDeNovo()
+class Program
 {
-    bool respostaValida = true;
-    bool jogarNovamente = true;
-    String? resposta = "";
-
-    while (respostaValida == true)
+    public static bool jogarDeNovo()
     {
-        Console.WriteLine("Deseja jogar de novo? (s/n)");
-        resposta = Console.ReadLine();
+        bool respostaValida = true;
+        bool jogarNovamente = true;
+        String? resposta = "";
 
-
-        if (String.Equals(resposta, "s", StringComparison.OrdinalIgnoreCase))
+        while (respostaValida == true)
         {
-            jogarNovamente = true;
-            respostaValida = false;
-        }
-        else if (String.Equals(resposta, "n", StringComparison.OrdinalIgnoreCase))
-        {
-            jogarNovamente = false;
-            respostaValida = false;
-        }
-        else
-        {
-            Console.WriteLine("Resposta inválida. Por favor, digite 's' para sim ou 'n' para não.");
-            continue;
-        }
+            Console.WriteLine("Deseja jogar de novo? (s/n)");
+            resposta = Console.ReadLine();
 
-    }
 
-    return jogarNovamente;
-
-}
-
-int pontuacao(int pontuacaoJogador1, int numeroSorteado1, int numeroJogador1)
-{
-    int pontuacaoJogador = pontuacaoJogador1;
-    int numeroSorteado = numeroSorteado1;
-    int numeroJogador = numeroJogador1;
-
-    int diferenca = Math.Abs(numeroSorteado - numeroJogador);
-
-    if (diferenca >= 10)
-    {
-        pontuacaoJogador -= 100;
-    }
-    else if (diferenca >= 5)
-    {
-        pontuacaoJogador -= 50;
-    }
-    else if (diferenca >= 1)
-    {
-        pontuacaoJogador -= 20;
-    }
-
-    return pontuacaoJogador;
-
-}
-
-Console.WriteLine("Jogo de Adivinhação");
-Console.WriteLine("");
-
-int numeroJogador = 0, numeroSorteado = 0;
-int dificuldade = 0, tentativas = 0;
-Random random = new Random();
-bool verifica = true;
-bool verificarDificuldade = true;
-List<int> numerosDigitados = new List<int>();
-int pontuacaoJogador = 1000;
-
-while (verifica == true)
-{
-
-    while (verificarDificuldade == true)
-    {
-
-        Console.WriteLine("Escolha uma dificuldade:");
-        Console.WriteLine("1 - Fácil (intervalo 1 a 10) / 10 tentativas");
-        Console.WriteLine("2 - Médio (intervalo 1 a 50) / 5 tentativas");
-        Console.WriteLine("3 - Difícil (intervalo 1 a 100) / 3 tentativas");
-        Console.WriteLine("Ou digite 0 para sair do jogo.");
-
-        try
-        {
-            dificuldade = Convert.ToInt32(Console.ReadLine());
-
-            if (dificuldade == 1)
+            if (String.Equals(resposta, "s", StringComparison.OrdinalIgnoreCase))
             {
-                dificuldade = 10;
-                tentativas = 10;
+                jogarNovamente = true;
+                respostaValida = false;
             }
-            else if (dificuldade == 2)
+            else if (String.Equals(resposta, "n", StringComparison.OrdinalIgnoreCase))
             {
-                dificuldade = 50;
-                tentativas = 5;
-            }
-            else if (dificuldade == 3)
-            {
-                dificuldade = 100;
-                tentativas = 3;
-            }
-            else if (dificuldade == 0)
-            {
-                Console.WriteLine("Obrigado por jogar! Até a próxima.");
-                Environment.Exit(0);
+                jogarNovamente = false;
+                respostaValida = false;
             }
             else
             {
-                Console.WriteLine("Dificuldade inválida. Por favor, escolha uma dificuldade válida (1, 2 ou 3).");
-                Console.WriteLine("");
+                Console.WriteLine("Resposta inválida. Por favor, digite 's' para sim ou 'n' para não.");
                 continue;
             }
 
         }
-        catch (System.Exception)
-        {
-            Console.WriteLine("Dificuldade inválida. Por favor, escolha uma dificuldade válida (1, 2 ou 3).");
-            Console.WriteLine("");
-            continue;
-        }
 
-        break;
+        return jogarNovamente;
 
     }
 
-    numeroSorteado = random.Next(1, dificuldade + 1);
-    bool acertou = false;
-
-    for (int i = 0; i < tentativas; i++)
+    public static int pontuacao(int pontuacaoJogador1, int numeroSorteado1, int numeroJogador1)
     {
+        int pontuacaoJogador = pontuacaoJogador1;
+        int numeroSorteado = numeroSorteado1;
+        int numeroJogador = numeroJogador1;
 
-        bool numeroRepetido = false;
+        int diferenca = Math.Abs(numeroSorteado - numeroJogador);
 
-        while (numeroRepetido == false)
+        if (diferenca >= 10)
         {
-            Console.WriteLine($"Digite um número inteiro entre 1 e {dificuldade}:");
-            Console.WriteLine("Ou digite 0 para sair do jogo.");
-            try
+            pontuacaoJogador -= 100;
+        }
+        else if (diferenca >= 5)
+        {
+            pontuacaoJogador -= 50;
+        }
+        else if (diferenca >= 1)
+        {
+            pontuacaoJogador -= 20;
+        }
+
+        return pontuacaoJogador;
+
+    }
+
+
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Jogo de Adivinhação");
+        Console.WriteLine("");
+
+        int numeroJogador = 0, numeroSorteado = 0;
+        int dificuldade = 0, tentativas = 0;
+        Random random = new Random();
+        bool verifica = true;
+        bool verificarDificuldade = true;
+        List<int> numerosDigitados = new List<int>();
+        int pontuacaoJogador = 1000;
+
+        while (verifica == true)
+        {
+
+            while (verificarDificuldade == true)
             {
-                numeroJogador = Convert.ToInt32(Console.ReadLine());
 
-                if (numeroJogador == 0)
+                Console.WriteLine("Escolha uma dificuldade:");
+                Console.WriteLine("1 - Fácil (intervalo 1 a 10) / 10 tentativas");
+                Console.WriteLine("2 - Médio (intervalo 1 a 50) / 5 tentativas");
+                Console.WriteLine("3 - Difícil (intervalo 1 a 100) / 3 tentativas");
+                Console.WriteLine("Ou digite 0 para sair do jogo.");
+
+                try
                 {
-                    Console.WriteLine($"O número sorteado era {numeroSorteado}.");
-                    Console.WriteLine("Obrigado por jogar! Até a próxima.");
-                    Environment.Exit(0);
+                    dificuldade = Convert.ToInt32(Console.ReadLine());
+
+                    if (dificuldade == 1)
+                    {
+                        dificuldade = 10;
+                        tentativas = 10;
+                    }
+                    else if (dificuldade == 2)
+                    {
+                        dificuldade = 50;
+                        tentativas = 5;
+                    }
+                    else if (dificuldade == 3)
+                    {
+                        dificuldade = 100;
+                        tentativas = 3;
+                    }
+                    else if (dificuldade == 0)
+                    {
+                        Console.WriteLine("Obrigado por jogar! Até a próxima.");
+                        Environment.Exit(0);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Dificuldade inválida. Por favor, escolha uma dificuldade válida (1, 2 ou 3).");
+                        Console.WriteLine("");
+                        continue;
+                    }
+
                 }
-
-                if (numeroJogador < 1 || numeroJogador > dificuldade)
+                catch (System.Exception)
                 {
-                    Console.WriteLine($"Número inválido. Por favor, digite um número inteiro entre 1 e {dificuldade}.");
+                    Console.WriteLine("Dificuldade inválida. Por favor, escolha uma dificuldade válida (1, 2 ou 3).");
+                    Console.WriteLine("");
                     continue;
                 }
 
-                numeroRepetido = true;
-                foreach (int numero in numerosDigitados)
+                break;
+
+            }
+
+            numeroSorteado = random.Next(1, dificuldade + 1);
+            bool acertou = false;
+
+            for (int i = 0; i < tentativas; i++)
+            {
+
+                bool numeroRepetido = false;
+
+                while (numeroRepetido == false)
                 {
-                    if (numero == numeroJogador)
+                    Console.WriteLine($"Digite um número inteiro entre 1 e {dificuldade}:");
+                    Console.WriteLine("Ou digite 0 para sair do jogo.");
+                    try
                     {
-                        Console.WriteLine("Você já digitou esse número. Por favor, tente um número diferente.");
-                        Console.WriteLine("");
-                        numeroRepetido = false;
+                        numeroJogador = Convert.ToInt32(Console.ReadLine());
+
+                        if (numeroJogador == 0)
+                        {
+                            Console.WriteLine($"O número sorteado era {numeroSorteado}.");
+                            Console.WriteLine("Obrigado por jogar! Até a próxima.");
+                            Environment.Exit(0);
+                        }
+
+                        if (numeroJogador < 1 || numeroJogador > dificuldade)
+                        {
+                            Console.WriteLine($"Número inválido. Por favor, digite um número inteiro entre 1 e {dificuldade}.");
+                            continue;
+                        }
+
+                        numeroRepetido = true;
+                        foreach (int numero in numerosDigitados)
+                        {
+                            if (numero == numeroJogador)
+                            {
+                                Console.WriteLine("Você já digitou esse número. Por favor, tente um número diferente.");
+                                Console.WriteLine("");
+                                numeroRepetido = false;
+                            }
+                        }
+
                     }
+                    catch (System.Exception)
+                    {
+                        Console.WriteLine("Número inválido. Por favor, digite um número inteiro entre 1 e 20.");
+                        continue;
+                    }
+
+                }
+
+                numerosDigitados.Add(numeroJogador);
+
+                if (numeroJogador == numeroSorteado)
+                {
+                    Console.WriteLine("Parabéns! Você acertou o número sorteado.");
+                    acertou = true;
+                    i = tentativas;
+                }
+                else
+                {
+
+                    if (numeroJogador < numeroSorteado)
+                    {
+                        Console.WriteLine("Número incorreto. O número sorteado é MAIOR do que o número que você digitou.");
+                        Console.WriteLine($"Você tem {tentativas - 1 - i} tentativas restantes. Tente novamente.");
+                        Console.WriteLine("");
+                        pontuacaoJogador = pontuacao(pontuacaoJogador, numeroSorteado, numeroJogador);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Número incorreto. O número sorteado é MENOR do que o número que você digitou.");
+                        Console.WriteLine($"Você tem {tentativas - 1 - i} tentativas restantes. Tente novamente.");
+                        Console.WriteLine("");
+                        pontuacaoJogador = pontuacao(pontuacaoJogador, numeroSorteado, numeroJogador);
+                    }
+
                 }
 
             }
-            catch (System.Exception)
+
+            if (acertou == false)
             {
-                Console.WriteLine("Número inválido. Por favor, digite um número inteiro entre 1 e 20.");
-                continue;
-            }
-
-        }
-
-        numerosDigitados.Add(numeroJogador);
-
-        if (numeroJogador == numeroSorteado)
-        {
-            Console.WriteLine("Parabéns! Você acertou o número sorteado.");
-            acertou = true;
-            i = tentativas;
-        }
-        else
-        {
-
-            if (numeroJogador < numeroSorteado)
-            {
-                Console.WriteLine("Número incorreto. O número sorteado é MAIOR do que o número que você digitou.");
-                Console.WriteLine($"Você tem {tentativas - 1 - i} tentativas restantes. Tente novamente.");
+                Console.WriteLine($"Suas tentativas acabaram. O número sorteado era {numeroSorteado}.");
                 Console.WriteLine("");
-                pontuacaoJogador = pontuacao(pontuacaoJogador, numeroSorteado, numeroJogador);
+                Console.WriteLine("A sua Pontuação final foi: " + pontuacaoJogador);
+                Console.WriteLine("");
+                verifica = jogarDeNovo();
             }
             else
             {
-                Console.WriteLine($"Número incorreto. O número sorteado é MENOR do que o número que você digitou.");
-                Console.WriteLine($"Você tem {tentativas - 1 - i} tentativas restantes. Tente novamente.");
+                Console.WriteLine($"O número sorteado era {numeroSorteado}.");
                 Console.WriteLine("");
-                pontuacaoJogador = pontuacao(pontuacaoJogador, numeroSorteado, numeroJogador);
+                Console.WriteLine("A sua Pontuação final foi: " + pontuacaoJogador);
+                Console.WriteLine("");
+                verifica = jogarDeNovo();
             }
+
 
         }
 
-    }
+        Console.WriteLine("");
+        Console.WriteLine("Obrigado por jogar! Até a próxima.");
 
-    if (acertou == false)
-    {
-        Console.WriteLine($"Suas tentativas acabaram. O número sorteado era {numeroSorteado}.");
-        Console.WriteLine("");
-        Console.WriteLine("A sua Pontuação final foi: " + pontuacaoJogador);
-        Console.WriteLine("");
-        verifica = jogarDeNovo();
-    }
-    else
-    {
-        Console.WriteLine($"O número sorteado era {numeroSorteado}.");
-        Console.WriteLine("");
-        Console.WriteLine("A sua Pontuação final foi: " + pontuacaoJogador);
-        Console.WriteLine("");
-        verifica = jogarDeNovo();
-    }
 
+
+
+    }
 
 }
-
-Console.WriteLine("");
-Console.WriteLine("Obrigado por jogar! Até a próxima.");
-
-
