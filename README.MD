@@ -1,4 +1,4 @@
-# 🎮 Jogo de Adivinhação em C
+# 🎮 Jogo de Adivinhação em C#
 
 ## 📌 Descrição
 
