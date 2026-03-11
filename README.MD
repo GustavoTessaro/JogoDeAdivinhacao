@@ -30,13 +30,13 @@ persistente**, que salva os melhores jogadores em um arquivo JSON.
 
 ------------------------------------------------------------------------
 
-# 🎮 Níveis de Dificuldade
+## 🎮 Níveis de Dificuldade
 
-  Dificuldade   Intervalo do Número   Tentativas
-  ------------- --------------------- ------------
-  Fácil         1 a 10                10
-  Médio         1 a 50                5
-  Difícil       1 a 100               3
+| Dificuldade | Intervalo do Número | Tentativas |
+|-------------|---------------------|-----------|
+| Fácil       | 1 a 10              | 10        |
+| Médio       | 1 a 50              | 5         |
+| Difícil     | 1 a 100             | 3         |
 
 ⚠️ Apenas no modo **Difícil** o jogador pode entrar no **ranking**.
 
@@ -49,11 +49,11 @@ O jogador começa com **1000 pontos**.
 A cada tentativa incorreta, pontos são descontados com base na
 **distância entre o número digitado e o número sorteado**.
 
-  Diferença   Penalidade
-  ----------- -------------
-  ≥ 10        -100 pontos
-  ≥ 5         -50 pontos
-  ≥ 1         -20 pontos
+| Diferença | Penalidade |
+|-----------|-----------|
+| ≥ 10      | -100 pontos |
+| ≥ 5       | -50 pontos |
+| ≥ 1       | -20 pontos |
 
 Quanto **mais próximo do número correto**, **menor a penalidade**.
 
