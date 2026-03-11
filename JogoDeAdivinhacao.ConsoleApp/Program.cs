@@ -1,4 +1,6 @@
-﻿
+﻿using System.Xml.Serialization;
+using System.Text.Json;
+using System.IO;
 class Program
 {
     public static bool jogarDeNovo()
@@ -60,11 +62,68 @@ class Program
 
     }
 
+    public static String? verificaProximidade(int numeroSorteado, int numeroJogador)
+    {
+        int diferenca = Math.Abs(numeroSorteado - numeroJogador);
 
+        if (diferenca >= 20)
+        {
+            return "Muito Longe";
+        }
+        else if (diferenca >= 10)
+        {
+            return "Longe";
+        }
+        else if (diferenca >= 5)
+        {
+            return "Perto";
+        }
+        else
+        {
+            return "Muito Perto";
+        }
+
+    }
+
+    public static void mostrarRanking(List<Jogador> ranking)
+    {
+        if (ranking.Count == 0)
+        {
+            Console.WriteLine("O ranking está vazio. Jogue na dificuldade difícil para adicionar jogadores ao ranking.");
+            Console.WriteLine("");
+            return;
+        }
+
+        var top5 = ranking.OrderByDescending(j => j.pontuacao).Take(5).ToList();
+
+        Console.WriteLine("Ranking Top 5:");
+        for (int i = 0; i < top5.Count; i++)
+        {
+            var jogador = top5[i];
+            Console.WriteLine($"{i + 1}° posição - Nome: {jogador.Nome} Pontuação: {jogador.pontuacao}");
+        }
+        Console.WriteLine("");
+    }
+    public static void salvarRanking(List<Jogador> ranking)
+    {
+        string jsonString = JsonSerializer.Serialize(ranking, new JsonSerializerOptions { WriteIndented = true });
+        File.WriteAllText("ranking.json", jsonString);
+    }
+    public static List<Jogador> lerRanking(List<Jogador> ranking)
+    {
+        if (File.Exists("ranking.json"))
+        {
+            string jsonString = File.ReadAllText("ranking.json");
+            return JsonSerializer.Deserialize<List<Jogador>>(jsonString) ?? new List<Jogador>();
+        }
+        return new List<Jogador>();
+    }
+    static string nomeArquivo = "ranking.json";
     static void Main(string[] args)
     {
         Console.WriteLine("Jogo de Adivinhação");
         Console.WriteLine("");
+
 
         int numeroJogador = 0, numeroSorteado = 0;
         int dificuldade = 0, tentativas = 0;
@@ -73,6 +132,11 @@ class Program
         bool verificarDificuldade = true;
         List<int> numerosDigitados = new List<int>();
         int pontuacaoJogador = 1000;
+
+        List<Jogador> ranking = new List<Jogador>();
+        ranking = lerRanking(ranking);
+
+        int dica = 1;
 
         while (verifica == true)
         {
@@ -84,6 +148,7 @@ class Program
                 Console.WriteLine("1 - Fácil (intervalo 1 a 10) / 10 tentativas");
                 Console.WriteLine("2 - Médio (intervalo 1 a 50) / 5 tentativas");
                 Console.WriteLine("3 - Difícil (intervalo 1 a 100) / 3 tentativas");
+                Console.WriteLine("4 - Ranking (apenas para dificuldade difícil)");
                 Console.WriteLine("Ou digite 0 para sair do jogo.");
 
                 try
@@ -104,6 +169,13 @@ class Program
                     {
                         dificuldade = 100;
                         tentativas = 3;
+                    }
+                    else if (dificuldade == 4)
+                    {
+
+                        mostrarRanking(ranking);
+
+                        continue;
                     }
                     else if (dificuldade == 0)
                     {
@@ -139,14 +211,42 @@ class Program
 
                 while (numeroRepetido == false)
                 {
+                    Console.WriteLine("");
                     Console.WriteLine($"Digite um número inteiro entre 1 e {dificuldade}:");
+
+                    if (dica == 1)
+                    {
+                        Console.WriteLine("Digite ´D´ para receber UMA dica.");
+                    }
+
                     Console.WriteLine("Ou digite 0 para sair do jogo.");
                     try
                     {
-                        numeroJogador = Convert.ToInt32(Console.ReadLine());
+                        String? jogadorDigia = Console.ReadLine();
+
+                        if (String.Equals(jogadorDigia, "D", StringComparison.OrdinalIgnoreCase) && dica == 1)
+                        {
+
+                            if (numeroSorteado % 2 == 0)
+                            {
+                                Console.WriteLine("O número sorteado é PAR.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("O número sorteado é ÍMPAR.");
+                            }
+
+                            dica = 0;
+                            continue;
+                        }
+                        else
+                        {
+                            numeroJogador = Convert.ToInt32(jogadorDigia);
+                        }
 
                         if (numeroJogador == 0)
                         {
+                            Console.WriteLine("");
                             Console.WriteLine($"O número sorteado era {numeroSorteado}.");
                             Console.WriteLine("Obrigado por jogar! Até a próxima.");
                             Environment.Exit(0);
@@ -154,6 +254,7 @@ class Program
 
                         if (numeroJogador < 1 || numeroJogador > dificuldade)
                         {
+                            Console.WriteLine("");
                             Console.WriteLine($"Número inválido. Por favor, digite um número inteiro entre 1 e {dificuldade}.");
                             continue;
                         }
@@ -172,6 +273,7 @@ class Program
                     }
                     catch (System.Exception)
                     {
+                        Console.WriteLine("");
                         Console.WriteLine("Número inválido. Por favor, digite um número inteiro entre 1 e 20.");
                         continue;
                     }
@@ -182,6 +284,7 @@ class Program
 
                 if (numeroJogador == numeroSorteado)
                 {
+                    Console.WriteLine("");
                     Console.WriteLine("Parabéns! Você acertou o número sorteado.");
                     acertou = true;
                     i = tentativas;
@@ -191,14 +294,21 @@ class Program
 
                     if (numeroJogador < numeroSorteado)
                     {
+
+                        String? proximidade = verificaProximidade(numeroSorteado, numeroJogador);
+
                         Console.WriteLine("Número incorreto. O número sorteado é MAIOR do que o número que você digitou.");
+                        Console.WriteLine($"Proximidade: {proximidade}");
                         Console.WriteLine($"Você tem {tentativas - 1 - i} tentativas restantes. Tente novamente.");
                         Console.WriteLine("");
                         pontuacaoJogador = pontuacao(pontuacaoJogador, numeroSorteado, numeroJogador);
                     }
                     else
                     {
+                        String? proximidade = verificaProximidade(numeroSorteado, numeroJogador);
+
                         Console.WriteLine($"Número incorreto. O número sorteado é MENOR do que o número que você digitou.");
+                        Console.WriteLine($"Proximidade: {proximidade}");
                         Console.WriteLine($"Você tem {tentativas - 1 - i} tentativas restantes. Tente novamente.");
                         Console.WriteLine("");
                         pontuacaoJogador = pontuacao(pontuacaoJogador, numeroSorteado, numeroJogador);
@@ -214,6 +324,23 @@ class Program
                 Console.WriteLine("");
                 Console.WriteLine("A sua Pontuação final foi: " + pontuacaoJogador);
                 Console.WriteLine("");
+
+                if (dificuldade == 100)
+                {
+
+                    Console.WriteLine("Digite o seu nome: ");
+                    string nomeJogador = Console.ReadLine()?? "Jogador sem nome";
+
+                    Jogador Jogador1 = new Jogador(nomeJogador, pontuacaoJogador);
+
+                    ranking.Add(Jogador1);
+
+                    mostrarRanking(ranking);
+                    salvarRanking(ranking);
+
+                }
+                dica = 1;
+                pontuacaoJogador = 1000;
                 verifica = jogarDeNovo();
             }
             else
@@ -222,6 +349,23 @@ class Program
                 Console.WriteLine("");
                 Console.WriteLine("A sua Pontuação final foi: " + pontuacaoJogador);
                 Console.WriteLine("");
+
+                if (dificuldade == 100)
+                {
+
+                    Console.WriteLine("Digite o seu nome: ");
+                    string nomeJogador = Console.ReadLine()?? "Jogador sem nome";
+
+                    Jogador Jogador1 = new Jogador(nomeJogador, pontuacaoJogador);
+
+                    ranking.Add(Jogador1);
+
+                    mostrarRanking(ranking);
+                    salvarRanking(ranking);
+
+                }
+                dica = 1;
+                pontuacaoJogador = 1000;
                 verifica = jogarDeNovo();
             }
 
